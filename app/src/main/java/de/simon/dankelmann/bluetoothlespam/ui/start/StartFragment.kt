@@ -415,6 +415,7 @@ class StartFragment : Fragment() {
 
                     AdvertisementSetType.ADVERTISEMENT_TYPE_CONTINUITY_DEVICE_POPUPS -> "iOS Device PopUps"
                     AdvertisementSetType.ADVERTISEMENT_TYPE_CONTINUITY_ACTION_MODALS -> "iOS Action Modals"
+                    AdvertisementSetType.ADVERTISEMENT_TYPE_CONTINUITY_IOS_17_CRASH -> "iOS 17 Crash"
 
                     AdvertisementSetType.ADVERTISEMENT_TYPE_FAST_PAIRING_DEVICE -> "Fast Pairing Device"
                     AdvertisementSetType.ADVERTISEMENT_TYPE_FAST_PAIRING_PHONE_SETUP -> "Fast Pairing Phone Setup"
@@ -466,7 +467,7 @@ class StartFragment : Fragment() {
     }
 
     fun onContinuityCardViewClicked(){
-        navigateToAdvertisementFragmentWithType(listOf(AdvertisementSetType.ADVERTISEMENT_TYPE_CONTINUITY_DEVICE_POPUPS, AdvertisementSetType.ADVERTISEMENT_TYPE_CONTINUITY_ACTION_MODALS), "Continuity Collection")
+        navigateToAdvertisementFragmentWithType(listOf(AdvertisementSetType.ADVERTISEMENT_TYPE_CONTINUITY_DEVICE_POPUPS, AdvertisementSetType.ADVERTISEMENT_TYPE_CONTINUITY_ACTION_MODALS, AdvertisementSetType.ADVERTISEMENT_TYPE_CONTINUITY_IOS_17_CRASH), "Continuity Collection")
     }
 
     fun onSwiftPairingCardViewClicked(){
