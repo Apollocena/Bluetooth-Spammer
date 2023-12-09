@@ -467,7 +467,8 @@ class StartFragment : Fragment() {
     }
 
     fun onContinuityCardViewClicked(){
-        navigateToAdvertisementFragmentWithType(listOf(AdvertisementSetType.ADVERTISEMENT_TYPE_CONTINUITY_DEVICE_POPUPS, AdvertisementSetType.ADVERTISEMENT_TYPE_CONTINUITY_ACTION_MODALS, AdvertisementSetType.ADVERTISEMENT_TYPE_CONTINUITY_IOS_17_CRASH), "Continuity Collection")
+        navigateToAdvertisementFragmentWithType(listOf(AdvertisementSetType.ADVERTISEMENT_TYPE_CONTINUITY_DEVICE_POPUPS, AdvertisementSetType.ADVERTISEMENT_TYPE_CONTINUITY_ACTION_MODALS, AdvertisementSetType.ADVERTISEMENT_TYPE_CONTINUITY_IOS_17_CRASH
+        ), "Continuity Collection")
     }
 
     fun onSwiftPairingCardViewClicked(){
