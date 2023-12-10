@@ -95,7 +95,6 @@ class ContinuityIos17CrashAdvertisementSetGenerator: IAdvertisementSetGenerator 
             var appendix = "000010"
             var randomAppendix = Random.Default.nextBytes(3)
 
-
             manufacturerSpecificData.manufacturerSpecificData = StringHelpers.decodeHex(continuityType + payloadSize + flag + action)
                 .plus(authenticationTag)
                 .plus(StringHelpers.decodeHex(appendix))

